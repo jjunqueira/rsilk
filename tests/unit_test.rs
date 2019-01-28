@@ -1,9 +1,7 @@
-extern crate rsilk;
-
 #[cfg(test)]
 mod tests {
 
-  use rsilk::header;
+  use rsilk::header::Header;
   use std::path::Path;
 
   #[test]
@@ -13,8 +11,8 @@ mod tests {
 
   #[test]
   fn test_can_parse_header() {
-    let path = Path::new("./foo/bar.txt");
-    let parsed_header = header::parse(path);
+    let path = Path::new("tests/data/FT_RWIPV6-v1-c0-B.dat");
+    let parsed_header = Header::parse(path).unwrap();
     assert_eq!(parsed_header.compression, 0);
   }
 }
