@@ -60,16 +60,22 @@ impl Header {
 
 fn header_from_bytes(bytes: &[u8; 16]) -> Header {
   let mut magic_number: [u8; 4] = Default::default();
+  let mut silk_version: [u8; 4] = Default::default();
+  let mut record_size: [u8; 2] = Default::default();
+  let mut record_version: [u8; 2] = Default::default();
   magic_number.copy_from_slice(&bytes[0..4]);
+  silk_version.copy_from_slice(&bytes[8..12]);
+  record_size.copy_from_slice(&bytes[12..14]);
+  record_version.copy_from_slice(&bytes[14..16]);
   Header {
     magic_number: magic_number,
-    file_flags: 0,
-    record_format: 0,
-    file_version: 0,
-    compression: 0,
-    silk_version: 0,
-    record_size: 0,
-    record_version: 0,
+    file_flags: bytes[4],
+    record_format: bytes[5],
+    file_version: bytes[6],
+    compression: bytes[7],
+    silk_version: u32::from_be_bytes(silk_version),
+    record_size: u16::from_be_bytes(record_size),
+    record_version: u16::from_be_bytes(record_version),
     var_len_headers: Vec::new(),
     header_length: 0,
     file_date_ms: 0,
